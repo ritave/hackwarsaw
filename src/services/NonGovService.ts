@@ -1,7 +1,8 @@
-import { NonGov } from "@/model/nonGov";
+"use client";
+import {NonGov} from "@/model/nonGov";
 import Fuse from "fuse.js";
-import { User } from "@/model/user";
-import {} from "@/services/DB";
+import {User} from "@/model/user";
+import {getContributionsStats} from "@/services/DB";
 
 export class MockNonGovService {
   nonGovs: NonGov[];
@@ -22,8 +23,7 @@ export class MockNonGovService {
     return this.fuse.search(fuzzyName).map((result) => result.item);
   }
 
-  // Can throw ErrDuplicate
-  // addContribution(user: User, amount: number) {
-  //     this.db
-  // }
+  updateContributions() {
+    return getContributionsStats()
+  }
 }

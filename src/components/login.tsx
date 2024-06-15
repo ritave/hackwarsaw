@@ -1,6 +1,6 @@
 "use client";
-import { useContext, useState } from "react";
-import { useAppState } from "../app/state";
+import {useContext, useState} from "react";
+import {useAppState} from "../app/state";
 import {
   Button,
   FormControl,
@@ -18,16 +18,16 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
-import { User } from "../model/user";
-import { LoginModal } from "./login-modal";
-import { mockUserService } from "@/services/UserService";
+import {User} from "../model/user";
+import {LoginModal} from "./login-modal";
+import {mockUserService} from "@/services/UserService";
 
 const userSrv = mockUserService();
 
 export function Login() {
   const [state, dispatch] = useAppState();
   const [emailInput, setEmailInput] = useState<string>("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {isOpen, onOpen, onClose} = useDisclosure();
 
   const onLogin = async () => {
     if (emailInput === "") {
@@ -35,11 +35,11 @@ export function Login() {
     }
     const user = await userSrv.getOrCreateByEmail(emailInput);
     setEmailInput("");
-    dispatch({ type: "login", user });
+    dispatch({type: "login", user});
   };
 
   const onLogout = () => {
-    dispatch({ type: "logout" });
+    dispatch({type: "logout"});
   };
 
   return (
@@ -68,7 +68,7 @@ export function Login() {
           </Button>
         </>
       )}
-      <LoginModal isOpen={isOpen} onClose={onClose} />
+      <LoginModal isOpen={isOpen} onClose={onClose}/>
     </>
   );
 }

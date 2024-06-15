@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@chakra-ui/button";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
+import {Button} from "@chakra-ui/button";
+import {FormControl, FormLabel} from "@chakra-ui/form-control";
+import {Input} from "@chakra-ui/input";
 import {
   Modal,
   ModalBody,
@@ -11,14 +11,18 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/modal";
-import React, { useLayoutEffect, useState } from "react";
-import { useAppState } from "../app/state";
+import React, {useLayoutEffect, useState} from "react";
+import {useAppState} from "../app/state";
+import {mockUserService} from "@/services/UserService";
+
+const userSrv = mockUserService()
 
 export interface Params {
   isOpen: boolean;
   onClose: () => void;
 }
-export function LoginModal({ isOpen, onClose }: Params) {
+
+export function LoginModal({isOpen, onClose}: Params) {
   const [state, dispatch] = useAppState();
   const [taxInput, setTaxInput] = useState(0);
   useLayoutEffect(() => {
@@ -26,16 +30,24 @@ export function LoginModal({ isOpen, onClose }: Params) {
   }, [isOpen, state.user?.taxAmount]);
 
   const onSave = () => {
-    dispatch({ type: "setTaxAmount", taxAmount: taxInput });
+    dispatch({type: "setTaxAmount", taxAmount: taxInput});
+
+
+    if (state.user !== undefined) {
+      let usr = {...state.user};
+      usr.taxAmount = taxInput
+      userSrv.update(usr)
+    }
+
     onClose();
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
+      <ModalOverlay/>
       <ModalContent>
         <ModalHeader>User preferences</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton/>
 
         <ModalBody>
           <FormControl>

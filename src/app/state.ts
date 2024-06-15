@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
-import { User } from "../model/user";
+import {createContext, useContext} from "react";
+import {User} from "../model/user";
 
 export const ReducerContext = createContext<State>(null as any);
 export const ReducerDispatchContext = createContext<React.Dispatch<Action>>(
@@ -25,18 +25,18 @@ export type Action =
 export function appReducer(state: State, action: Action): State {
   switch (action.type) {
     case "logout":
-      return { ...state, user: undefined };
+      return {...state, user: undefined};
     case "login":
-      return { ...state, user: action.user };
+      return {...state, user: action.user};
     case "setContribution":
       if (state.user === undefined) {
         throw new Error("Tried to update logged-out user");
       }
-      return { ...state, user: { ...state.user, contributesTo: action.krs } };
+      return {...state, user: {...state.user, contributesTo: action.krs}};
     case "setTaxAmount":
       if (state.user === undefined) {
         throw new Error("Tried to update logged-out user");
       }
-      return { ...state, user: { ...state.user, taxAmount: action.taxAmount } };
+      return {...state, user: {...state.user, taxAmount: action.taxAmount}};
   }
 }

@@ -1,6 +1,6 @@
 import {User} from "@/model/user";
 import {ErrDuplicate, ErrNotFound} from "@/model/errors";
-import {createUser, getUserByEmail} from "@/services/DB";
+import {createUser, getUserByEmail, updateUser} from "@/services/DB";
 
 
 let mockUser: MockUserService | undefined;
@@ -34,6 +34,10 @@ class MockUserService {
                 }
                 throw e;
             })
+    }
+
+    public async update(user: User): Promise<void> {
+        return updateUser(user)
     }
 }
 

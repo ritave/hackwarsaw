@@ -1,9 +1,9 @@
 "use client";
-import React, { useReducer } from "react";
-import { ChakraProvider } from "@chakra-ui/react";
-import { ReducerContext, ReducerDispatchContext, appReducer } from "./state";
+import React, {useReducer} from "react";
+import {ChakraProvider} from "@chakra-ui/react";
+import {ReducerContext, ReducerDispatchContext, appReducer} from "./state";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({children}: { children: React.ReactNode }) {
   const [reducer, dispatch] = useReducer(appReducer, {});
   return (
     <ChakraProvider>
