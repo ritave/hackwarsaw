@@ -1,19 +1,10 @@
 "use client";
-import { Ngov, Params as NgovParams } from "../components/ngov";
-import {
-  Grid,
-  GridItem,
-  HStack,
-  Input,
-  SimpleGrid,
-  Spacer,
-} from "@chakra-ui/react";
-import Fuse from "fuse.js";
+import { Ngov } from "../components/ngov";
+import { Grid, GridItem, HStack, SimpleGrid, Spacer } from "@chakra-ui/react";
 import { useState } from "react";
 import { MockNonGovService } from "@/services/NonGovService";
 import React from "react";
 import { Login } from "../components/login";
-import { useDebouncedCallback } from "use-debounce";
 import { Filter } from "../components/filter";
 
 const nonGovSrv = new MockNonGovService();
