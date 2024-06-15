@@ -13,17 +13,16 @@ import { useState } from "react";
 import { MockNonGovService } from "@/services/NonGovService";
 import React from "react";
 import { Login } from "../components/login";
+import { useDebouncedCallback } from "use-debounce";
+import { Filter } from "../components/filter";
 
 const nonGovSrv = new MockNonGovService();
 
 export default function Page() {
   const [ngovs, setNgovs] = useState(nonGovSrv.list(""));
-  const [search, setSearch] = useState("");
 
-  const updateSearchData = (filter: string) => {
-    setSearch(filter);
-    let ngovs = nonGovSrv.list(filter);
-    setNgovs(ngovs);
+  const onSearch = (filter: string) => {
+    setNgovs(nonGovSrv.list(filter));
   };
 
   return (
@@ -37,13 +36,7 @@ export default function Page() {
     >
       <GridItem area="filter">
         <HStack spacing={4}>
-          <Input
-            placeholder="Filter"
-            size="sm"
-            maxWidth={400}
-            value={search}
-            onChange={(e) => updateSearchData(e.target.value)}
-          />
+          <Filter onSearch={onSearch} />
           <Spacer />
           <Login />
         </HStack>
