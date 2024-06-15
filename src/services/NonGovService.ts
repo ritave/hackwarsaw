@@ -23,7 +23,14 @@ export class MockNonGovService {
     return this.fuse.search(fuzzyName).map((result) => result.item);
   }
 
-  updateContributions() {
-    return getContributionsStats()
+  async updateContributions(): Promise<void> {
+    const stats = await getContributionsStats()
+
+    this.nonGovs.forEach((nG) => {
+      const s = stats.get(nG.krs) || {count: 0, sum: 0}
+
+      nG.contributors = s.count
+      nG.totalRaised = s.sum
+    });
   }
 }

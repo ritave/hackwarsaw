@@ -31,10 +31,30 @@ export async function updateUser(u: User): Promise<void> {
   await sql`UPDATE users SET tax_amount=${u.taxAmount}, contributes_to=${u.contributesTo} WHERE email = ${u.email};`;
 }
 
-export async function getContributionsStats(): Promise<Map<string, { count: number, sum: number }>> {
+export async function getContributionsStats(): Promise<Map<string, { count: number, sum: number, match: number }>> {
   const results = await sql`SELECT contributes_to, COUNT(*), SUM(tax_amount) FROM users GROUP BY contributes_to;`
-  let out = new Map<string, { count: number, sum: number }>
+  let out = new Map<string, { count: number, sum: number, match: number }>()
 
-  console.log(out)
+  results.rows.forEach((r) => {
+    let v = out.get(r.contributes_to) || {count: 0, sum: 0, match: 0}
+    out.set(r.contributes_to, {count: Number(v.count) + Number(r.count), sum: Number(v.sum) + Number(r.sum), match: 0})
+  })
+
+  linearMatch(Number(process.env.GOV_MATCH), out)
   return out;
+}
+
+function linearMatch(totalMatch: number, contributions: Map<string, {count: number, sum: number, match: number}>) {
+  let totalContributions = Number(0);
+  contributions.forEach(v => {
+    totalContributions += v.sum;
+  });
+
+  contributions.forEach(v => {
+    v.match = totalMatch * (v.sum / totalContributions)
+  })
+}
+
+function quadraticMatch(totalMatch: number, contributions: Map<string, {count: number, sum: number, match: number}>) {
+  // TODO
 }

@@ -13,6 +13,7 @@ import {Pln} from "./pln";
 import React, {useContext} from "react";
 import {ReducerContext, useAppState} from "../app/state";
 import {mockUserService} from "@/services/UserService";
+import {User} from "@/model/user";
 
 
 const userSrv = mockUserService()
@@ -34,6 +35,7 @@ export function Ngov(params: Params) {
 
         if (state.user !== undefined) {
             let usr = {...state.user};
+            let oldContrib = usr?.contributesTo || "";
             usr.contributesTo = params.krs
             userSrv.update(usr)
         }
