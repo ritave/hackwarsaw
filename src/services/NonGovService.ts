@@ -1,6 +1,8 @@
 import {NonGov} from "@/model/nonGov";
 import Fuse from "fuse.js";
 import {User} from "@/model/user";
+import {} from "@/services/DB";
+
 
 export class MockNonGovService {
     nonGovs: NonGov[];
@@ -24,7 +26,7 @@ export class MockNonGovService {
     }
 
     // Can throw ErrDuplicate
-    addContribution(user: User, amount: number) {
-        
-    }
+    // addContribution(user: User, amount: number) {
+    //     this.db
+    // }
 }

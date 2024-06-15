@@ -1,6 +1,7 @@
 import {User} from "@/model/user";
 import {ErrDuplicate, ErrNotFound} from "@/model/errors";
 
+
 export class MockUserService {
     usersByEmail: Map<string, User>
 
@@ -26,4 +27,5 @@ export class MockUserService {
         this.usersByEmail.set(email, new User(email))
     }
 }
+
 
