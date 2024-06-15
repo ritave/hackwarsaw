@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node -r dotenv/config ./scripts/seed.js dotenv_config_path=.env.development.local"
+    "seed": "node -r dotenv/config ./scripts/seed.js dotenv_config_path=.env.development.local",
+    "seedProd": "node -r dotenv/config ./scripts/seed.js dotenv_config_path=.env.local"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
