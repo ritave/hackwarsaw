@@ -40,21 +40,29 @@ export async function getContributionsStats(): Promise<Map<string, { count: numb
     out.set(r.contributes_to, {count: Number(v.count) + Number(r.count), sum: Number(v.sum) + Number(r.sum), match: 0})
   })
 
-  linearMatch(Number(process.env.GOV_MATCH), out)
+  govMatch('quadratic', Number(process.env.GOV_MATCH), out);
   return out;
 }
+function govMatch(weightType: string, totalMatch: number, contributions: Map<string, { count: number, sum: number, match: number }>) {
+  let weightCalc = new Map<string, (count: number, sum: number) => number>()
+  weightCalc.set('linear', (count: number, sum: number): number => {
+    return sum;
+  })
+  weightCalc.set('quadratic', (count: number, sum: number): number => {
+    return Math.pow(count, 2) * Math.sqrt(sum);
+  })
 
-function linearMatch(totalMatch: number, contributions: Map<string, {count: number, sum: number, match: number}>) {
-  let totalContributions = Number(0);
+  let weightFunc = weightCalc.get(weightType)
+  if (weightFunc === undefined) {
+    return
+  }
+
+  let totalWeight = 0
   contributions.forEach(v => {
-    totalContributions += v.sum;
+    totalWeight += weightFunc(v.count, v.sum)
   });
 
   contributions.forEach(v => {
-    v.match = totalMatch * (v.sum / totalContributions)
+    v.match = totalMatch * (weightFunc(v.count, v.sum) / totalWeight)
   })
-}
-
-function quadraticMatch(totalMatch: number, contributions: Map<string, {count: number, sum: number, match: number}>) {
-  // TODO
 }
