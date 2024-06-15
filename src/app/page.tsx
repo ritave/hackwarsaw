@@ -1,21 +1,28 @@
 "use client";
 import { Ngov } from "../components/ngov";
 import { Grid, GridItem, HStack, SimpleGrid, Spacer } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MockNonGovService } from "@/services/NonGovService";
 import React from "react";
 import { Login } from "../components/login";
 import { Filter } from "../components/filter";
+import { useAppState } from "./state";
 
 const nonGovSrv = new MockNonGovService();
 
 export default function Page() {
-  const [ngovs, setNgovs] = useState(nonGovSrv.list(""));
+  const [state, dispatch] = useAppState();
 
-  const onSearch = (filter: string) => {
-    setNgovs(nonGovSrv.list(filter));
+  useEffect(() => {
+    nonGovSrv.updateContributions().then(() => {
+      dispatch({ type: "setNgovs", ngovs: nonGovSrv.list(state.search) });
+    });
+  }, [dispatch, state.search, state.user]);
+
+  const onSearch = (search: string) => {
+    dispatch({ type: "setSearch", search });
+    dispatch({ type: "setNgovs", ngovs: nonGovSrv.list(search) });
   };
-
 
   return (
     <Grid
@@ -35,7 +42,7 @@ export default function Page() {
       </GridItem>
       <GridItem area={"ngovs"}>
         <SimpleGrid columns={5} spacing={4}>
-          {ngovs.map(({ contributors, name, krs, totalRaised }) => (
+          {state.ngovs.map(({ contributors, name, krs, totalRaised }) => (
             <Ngov
               contributors={contributors}
               krs={krs}
