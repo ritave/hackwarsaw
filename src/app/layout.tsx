@@ -5,6 +5,8 @@ import { Providers } from "./providers";
 
 //const inter = Inter({ subsets: ["latin"] });
 
+import React from "react";
+
 export const metadata: Metadata = {
   title: "Quadratic Funding",
   description: "Sponsor non-profits using quadratic funding algorithm",

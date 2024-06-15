@@ -1,8 +1,6 @@
 "use client";
 import { Ngov, Params as NgovParams } from "../components/ngov";
 import {
-  Button,
-  Flex,
   Grid,
   GridItem,
   HStack,
@@ -12,17 +10,19 @@ import {
 } from "@chakra-ui/react";
 import Fuse from "fuse.js";
 import { useState } from "react";
-import {MockNonGovService} from "@/services/NonGovService";
+import { MockNonGovService } from "@/services/NonGovService";
+import React from "react";
+import { Login } from "../components/login";
 
-const nonGovSrv = new MockNonGovService()
+const nonGovSrv = new MockNonGovService();
 
 export default function Page() {
   const [ngovs, setNgovs] = useState(nonGovSrv.list(""));
 
   const updateSearchData = (filter: string) => {
-    let ngovs = nonGovSrv.list(filter)
-    console.log(ngovs[0])
-    setNgovs(ngovs)
+    let ngovs = nonGovSrv.list(filter);
+    console.log(ngovs[0]);
+    setNgovs(ngovs);
   };
 
   return (
@@ -43,10 +43,7 @@ export default function Page() {
             onChange={(e) => updateSearchData(e.target.value)}
           />
           <Spacer />
-          <Input placeholder="E-Mail" size="sm" maxWidth={200} />
-          <Button colorScheme="blue" size="sm">
-            Login
-          </Button>
+          <Login />
         </HStack>
       </GridItem>
       <GridItem area={"ngovs"}>
