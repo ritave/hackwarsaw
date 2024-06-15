@@ -1,30 +1,39 @@
 import {User} from "@/model/user";
 import {ErrDuplicate, ErrNotFound} from "@/model/errors";
+import {createUser, getUserByEmail} from "@/services/DB";
 
 
-export class MockUserService {
-    usersByEmail: Map<string, User>
+let mockUser: MockUserService | undefined;
 
-    constructor() {
-        this.usersByEmail = new Map<string, User>
+export function mockUserService(): MockUserService {
+    if (mockUser === undefined) {
+        mockUser = new MockUserService();
     }
+    return mockUser;
+}
 
+
+class MockUserService {
     // Can throw ErrNotFound
-    public getByEmail(email: string): User {
-        let out = this.usersByEmail.get(email)
-        if (out === undefined) {
-            throw ErrNotFound;
-        }
-
-        return out
+    public async getByEmail(email: string): Promise<User> {
+        return getUserByEmail(email)
     }
 
     // Can throw ErrDuplicate
-    public create(email: string): void {
-        if (this.usersByEmail.has(email)) {
-            throw ErrDuplicate;
-        }
-        this.usersByEmail.set(email, new User(email))
+    public async create(email: string): Promise<void> {
+        return createUser(email)
+    }
+
+    public async getOrCreateByEmail(email: string): Promise<User> {
+        return this.getByEmail(email)
+            .catch(async e => {
+                const msg = (e as Error).message;
+                if (msg === ErrNotFound) {
+                    await this.create(email);
+                    return await this.getByEmail(email);
+                }
+                throw e;
+            })
     }
 }
 

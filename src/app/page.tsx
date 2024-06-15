@@ -9,28 +9,19 @@ import {
     Spacer,
 } from "@chakra-ui/react";
 import Fuse from "fuse.js";
-import {useState, useTransition} from "react";
+import {useState} from "react";
 import {MockNonGovService} from "@/services/NonGovService";
 import React from "react";
 import {Login} from "../components/login";
-import {getUserByEmail} from "@/services/DB";
 
 const nonGovSrv = new MockNonGovService();
 
 export default function Page() {
     const [ngovs, setNgovs] = useState(nonGovSrv.list(""));
 
-    const [isPending, startTransition] = useTransition();
-
     const updateSearchData = (filter: string) => {
         let ngovs = nonGovSrv.list(filter)
         setNgovs(ngovs)
-        if (!isPending) {
-            startTransition(async () => {
-                const user = getUserByEmail("user1@test.com")
-            })
-        }
-
     };
 
     return (

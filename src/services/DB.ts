@@ -1,17 +1,21 @@
 "use server";
 
 import {sql} from '@vercel/postgres';
-import {NextResponse} from 'next/server';
 import {User} from "@/model/user";
+import {ErrNotFound} from "@/model/errors";
 
 export async function getUserByEmail(email: string): Promise<User> {
-    console.log(process.env);
-    const result = await sql`SELECT (id, email) FROM users WHERE email = ${email};`;
-    console.log(result);
-    return new User("1");
+    const result = await sql`SELECT email, tax_amount, contributes_to FROM users WHERE email = ${email};`;
+    if (result.rowCount == 0) {
+        throw new Error(ErrNotFound);
+    }
+    return {
+        email: result.rows[0].email,
+        taxAmount: result.rows[0].tax_amount,
+        contributesTo: result.rows[0].contributes_to,
+    }
 }
 
 export async function createUser(email: string): Promise<void> {
-    const result = await sql`INSERT INTO user(email) VALUES(${email});`;
-    console.log(result);
+    await sql`INSERT INTO users(email, tax_amount, contributes_to) VALUES(${email}, 0, '');`;
 }
