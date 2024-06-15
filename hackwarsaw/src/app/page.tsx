@@ -1,8 +1,17 @@
 "use client";
-import { Ngov, Params as NgovParams } from "./components/ngov";
-import { Grid, GridItem, Input, SimpleGrid } from "@chakra-ui/react";
+import { Ngov, Params as NgovParams } from "../components/ngov";
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Input,
+  SimpleGrid,
+  Spacer,
+} from "@chakra-ui/react";
 import Fuse from "fuse.js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Page() {
   const fuse = new Fuse(FAKE_DATA_NGOVS, {
@@ -33,13 +42,20 @@ export default function Page() {
       m={4}
       gap={4}
     >
-      <GridItem area={"filter"}>
-        <Input
-          placeholder="Filter"
-          size="sm"
-          maxWidth={400}
-          onChange={(e) => updateSearchData(e.target.value)}
-        />
+      <GridItem area="filter">
+        <HStack spacing={4}>
+          <Input
+            placeholder="Filter"
+            size="sm"
+            maxWidth={400}
+            onChange={(e) => updateSearchData(e.target.value)}
+          />
+          <Spacer />
+          <Input placeholder="E-Mail" size="sm" maxWidth={200} />
+          <Button colorScheme="blue" size="sm">
+            Login
+          </Button>
+        </HStack>
       </GridItem>
       <GridItem area={"ngovs"}>
         <SimpleGrid columns={5} spacing={4}>
