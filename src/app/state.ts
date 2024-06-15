@@ -19,7 +19,8 @@ export interface State {
 export type Action =
   | { type: "logout" }
   | { type: "login"; user: User }
-  | { type: "setContribution"; krs: string };
+  | { type: "setContribution"; krs: string }
+  | { type: "setTaxAmount"; taxAmount: number };
 
 export function appReducer(state: State, action: Action): State {
   switch (action.type) {
@@ -32,5 +33,10 @@ export function appReducer(state: State, action: Action): State {
         throw new Error("Tried to update logged-out user");
       }
       return { ...state, user: { ...state.user, contributesTo: action.krs } };
+    case "setTaxAmount":
+      if (state.user === undefined) {
+        throw new Error("Tried to update logged-out user");
+      }
+      return { ...state, user: { ...state.user, taxAmount: action.taxAmount } };
   }
 }

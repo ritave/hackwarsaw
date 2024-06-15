@@ -1,8 +1,24 @@
 import { useContext, useState } from "react";
 import { useAppState } from "../app/state";
-import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React from "react";
 import { User } from "../model/user";
+import { LoginModal } from "./login-modal";
 
 const usersByEmail = new Map<string, User>();
 
@@ -18,6 +34,7 @@ async function getOrCreateAccount(email: string) {
 export function Login() {
   const [state, dispatch] = useAppState();
   const [emailInput, setEmailInput] = useState<string>("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onLogin = async () => {
     if (emailInput === "") {
@@ -32,22 +49,33 @@ export function Login() {
     dispatch({ type: "logout" });
   };
 
-  return state.user ? (
-    <Button colorScheme="blue" size="sm" onClick={onLogout}>
-      Log-out
-    </Button>
-  ) : (
+  return (
     <>
-      <Input
-        placeholder="E-Mail"
-        size="sm"
-        maxWidth={200}
-        value={emailInput}
-        onChange={(e) => setEmailInput(e.target.value)}
-      />
-      <Button colorScheme="blue" size="sm" onClick={(e) => onLogin()}>
-        Login
-      </Button>
+      {state.user ? (
+        <>
+          <Button size="sm" onClick={onOpen}>
+            Preferences
+          </Button>
+          <Button colorScheme="blue" size="sm" onClick={onLogout}>
+            Log-out
+          </Button>
+        </>
+      ) : (
+        <>
+          <Input
+            type="email"
+            placeholder="E-Mail"
+            size="sm"
+            maxWidth={200}
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
+          />
+          <Button colorScheme="blue" size="sm" onClick={(e) => onLogin()}>
+            Login
+          </Button>
+        </>
+      )}
+      <LoginModal isOpen={isOpen} onClose={onClose} />
     </>
   );
 }
