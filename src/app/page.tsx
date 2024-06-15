@@ -42,15 +42,18 @@ export default function Page() {
       </GridItem>
       <GridItem area={"ngovs"}>
         <SimpleGrid columns={5} spacing={4}>
-          {state.ngovs.map(({ contributors, name, krs, totalRaised }) => (
-            <Ngov
-              contributors={contributors}
-              krs={krs}
-              name={name}
-              totalRaised={totalRaised}
-              key={krs}
-            />
-          ))}
+          {state.ngovs.map(
+            ({ contributors, name, krs, totalRaised, govMatch }) => (
+              <Ngov
+                contributors={contributors}
+                krs={krs}
+                name={name}
+                totalRaised={totalRaised}
+                match={govMatch}
+                key={krs}
+              />
+            )
+          )}
         </SimpleGrid>
       </GridItem>
     </Grid>

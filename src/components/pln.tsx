@@ -1,4 +1,8 @@
 "use client";
+
+import { Badge } from "@chakra-ui/layout";
+import React from "react";
+
 export interface Params {
   amount: number;
 }
@@ -9,5 +13,9 @@ const PlnIntl = new Intl.NumberFormat("pl-PL", {
 });
 
 export function Pln({ amount }: Params) {
-  return PlnIntl.format(amount);
+  return (
+    <Badge variant="outline" colorScheme={amount > 0 ? "green" : undefined}>
+      {PlnIntl.format(amount)}
+    </Badge>
+  );
 }
