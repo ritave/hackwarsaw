@@ -49,7 +49,7 @@ function govMatch(weightType: string, totalMatch: number, contributions: Map<str
     return sum;
   })
   weightCalc.set('quadratic', (count: number, sum: number): number => {
-    return Math.pow(count, 2) * Math.sqrt(sum);
+    return Math.pow(count, 2) * sum;
   })
 
   let weightFunc = weightCalc.get(weightType)
