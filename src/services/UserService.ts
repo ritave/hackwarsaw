@@ -1,5 +1,4 @@
 import {User} from "@/model/user";
-import {mockUsers} from "@/mock/data";
 import {ErrDuplicate, ErrNotFound} from "@/model/errors";
 
 export class MockUserService {
@@ -7,10 +6,6 @@ export class MockUserService {
 
     constructor() {
         this.usersByEmail = new Map<string, User>
-        mockUsers.forEach((u) => {
-            let usr = new User(u.email);
-            this.usersByEmail.set(u.email, usr);
-        })
     }
 
     // Can throw ErrNotFound
