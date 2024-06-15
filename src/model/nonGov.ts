@@ -8,6 +8,7 @@ export class NonGov {
 
     contributors: number;
     totalRaised: number;
+    govMatch: number;
 
     constructor(krs: string, name: string, region: string, city: string) {
         this.krs = krs;
@@ -16,6 +17,7 @@ export class NonGov {
         this.city = city;
         this.contributors = 0;
         this.totalRaised = 0;
+        this.govMatch = 0;
     }
 
     public static fromJSON(data: any): NonGov {

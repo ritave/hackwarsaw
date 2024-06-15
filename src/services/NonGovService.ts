@@ -27,10 +27,11 @@ export class MockNonGovService {
     const stats = await getContributionsStats()
 
     this.nonGovs.forEach((nG) => {
-      const s = stats.get(nG.krs) || {count: 0, sum: 0}
+      const s = stats.get(nG.krs) || {count: 0, sum: 0, match: 0}
 
       nG.contributors = s.count
       nG.totalRaised = s.sum
+      nG.govMatch = s.match
     });
   }
 }
